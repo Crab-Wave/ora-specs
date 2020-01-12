@@ -29,7 +29,7 @@
 % Needed to configure page layout
 \RequirePackage{geometry}
 % Needed to put a background to the document
-\RequirePackage{background}
+\RequirePackage[pages=some]{background}
 % Needed to manage fonts
 \RequirePackage[quiet]{fontspec}
 % Needed to use icons from font-awesome
@@ -46,6 +46,12 @@
   pdfsubject={},
   pdfkeywords={}
 }
+% Needed to set section font
+\RequirePackage{sectsty}
+% Needed to define colors
+\RequirePackage{xcolor}
+\RequirePackage{calc}
+\RequirePackage[absolute,quiet,overlay]{textpos}
 
 %-------------------------------------------------------------------------------
 %                Configuration for directory locations
@@ -59,17 +65,7 @@
 %-------------------------------------------------------------------------------
 %% Page Layout
 % Configure page margins with geometry
-\geometry{left=1.5cm, top=3.5cm, right=1.5cm, bottom=1.5cm, footskip=.5cm}
-
-\backgroundsetup{
-  scale=1,
-  color=black,
-  opacity=1.0,
-  angle=0,
-  contents={%
-    \includegraphics[width=\paperwidth,height=\paperheight]{background.png}
-  }%
-}
+\geometry{left=2.0cm, top=4.5cm, right=2.0cm, bottom=2.0cm, footskip=.5cm}
 
 %-------------------------------------------------------------------------------
 %                Configuration for colors
@@ -91,46 +87,113 @@
 \colorlet{text}{darkgray}
 \colorlet{graytext}{gray}
 \colorlet{lighttext}{lightgray}
-% Awesome colors
-\definecolor{awesome-emerald}{HTML}{00A388}
-\definecolor{awesome-skyblue}{HTML}{0395DE}
-\definecolor{awesome-red}{HTML}{DC3522}
-\definecolor{awesome-pink}{HTML}{EF4089}
-\definecolor{awesome-orange}{HTML}{FF6138}
-\definecolor{awesome-nephritis}{HTML}{27AE60}
-\definecolor{awesome-concrete}{HTML}{95A5A6}
-\definecolor{awesome-darknight}{HTML}{131A28}
-\colorlet{awesome}{awesome-red}
+% Project colors
+\definecolor{crab}{HTML}{e55934}
 
-% Boolean value to switch section color highlighting
-\newbool{acvSectionColorHighlight}
-\setbool{acvSectionColorHighlight}{true}
-
-% Awesome section color
-\def\@sectioncolor#1#2#3{%
-  \ifbool{acvSectionColorHighlight}{{\color{awesome}#1#2#3}}{#1#2#3}%
-}
+\sectionfont{\color{crab}}
 
 %-------------------------------------------------------------------------------
 %                Configuration for fonts
 %-------------------------------------------------------------------------------
-% Set font for header (default is Roboto)
-\newfontfamily\headerfont[
-  Path=\@fontdir,
-  UprightFont=*-Regular,
-  ItalicFont=*-Italic,
-  BoldFont=*-Bold,
-  BoldItalicFont=*-BoldItalic,
-]{Roboto}
+% Set the FontAwesome font to be up-to-date
+\setfontfamily\FA[Path=\@fontdir]{FontAwesome}
 
-\newfontfamily\headerfontlight[
-  Path=\@fontdir,
-  UprightFont=*-Thin,
-  ItalicFont=*-ThinItalic,
-  BoldFont=*-Medium,
-  BoldItalicFont=*-MediumItalic,
-]{Roboto}
+\newcommand*{\bodyfont}{\sourcesanspro}
+\newcommand*{\bodyfontlight}{\sourcesansprolight}
 
-% \newcommand*{\footerfont}{\sourcesanspro}
-% \newcommand*{\bodyfont}{\sourcesanspro}
-% \newcommand*{\bodyfontlight}{\sourcesansprolight}
+%-------------------------------------------------------------------------------
+%                Configuration for styles
+%-------------------------------------------------------------------------------
+% Configure styles for each Specifications elements
+% For fundamental structures
+\newcommand*{\headernamesstyle}[1]{{\fontsize{32pt}{1em}\headerfontlight\color{text} #1}}
+\newcommand*{\headerpositionstyle}[1]{{\fontsize{7.6pt}{1em}\bodyfont\scshape\color{crab} #1}}
+\newcommand*{\footerstyle}[1]{{\fontsize{8pt}{1em}\footerfont\scshape\color{lighttext} #1}}
+\newcommand*{\sectionstyle}[1]{{\fontsize{16pt}{1em}\bodyfont\bfseries\color{text}\@sectioncolor #1}}
+\newcommand*{\subsectionstyle}[1]{{\fontsize{12pt}{1em}\bodyfont\scshape\textcolor{text}{#1}}}
+\newcommand*{\paragraphstyle}{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text}}
+
+%-------------------------------------------------------------------------------
+%                Commands for personal information
+%-------------------------------------------------------------------------------
+
+% Define background images
+% Usage: \firstpage{<path-to-image>}
+% Usage: \background{<path-to-image>}
+\newcommand*{\firstpage}[1]{\def\@firstpage{#1}}
+\newcommand*{\background}[1]{\def\@background{#1}}
+\newcommand*{\lheader}[1]{\def\@lheader{#1}}
+\newcommand*{\rheader}[1]{\def\@rheader{#1}}
+
+% Define project's basic properties
+% Usage: \university{<university name>}
+\newcommand*{\university}[1]{\def\@university{#1}}
+
+% Defines project's email (optional)
+% Usage: \email{<email address>}
+\newcommand*{\email}[1]{\def\@email{#1}}
+
+% Defines project's homepage (optional)
+% Usage: \homepage{<url>}
+\newcommand*{\homepage}[1]{\def\@homepage{#1}}
+
+% Defines project's github (optional)
+% Usage: \github{<github-nick>}
+\newcommand*{\github}[1]{\def\@github{#1}}
+
+% Defines project's gitlab (optional)
+% Usage: \gitlab{<gitlab-nick>}
+\newcommand*{\gitlab}[1]{\def\@gitlab{#1}}
+
+% -------------------------------------------------------------------------
+
+\AddEverypageHook{
+  \ifnum\value{page}=1\relax
+    \backgroundsetup{
+      scale=1,
+      angle=0,
+      opacity=1.0,
+      contents={
+        \includegraphics[width=\paperwidth,height=\paperheight]{\@firstpage}
+	  }
+    }
+  \else
+    \backgroundsetup{
+      scale=1,
+      angle=0,
+      opacity=1.0,
+      contents={
+        \includegraphics[width=\paperwidth,height=\paperheight]{\@background}
+	  }
+    }
+	\TPoptions{absolute=true,showboxes=false}
+    \begin{center}
+      \begin{textblock*}{10cm}(-0.5cm,1.0cm)
+        {\color{white}\bfseries\fontsize{20}{25}\selectfont\MakeUppercase\@lheader}
+      \end{textblock*}
+	  \begin{textblock*}{10cm}(11.2cm,1.0cm)
+        {\color{white}\bfseries\fontsize{20}{25}\selectfont\MakeUppercase\@rheader}
+      \end{textblock*}
+    \end{center}
+  \fi
+  \BgMaterial
+}
+
+\renewcommand\maketitle{
+  \begin{center}
+    \includegraphics[scale=0.08]{logo.png}
+  \end{center}
+  \begin{center}
+    {\Huge\bfseries\@title\par}
+	\vspace*{2ex}
+    {\Large\bfseries\@author\par}
+	\vspace*{2ex}
+    {\ifx\@university\@empty\else\large\@university\par\fi}
+  \end{center}
+  \TPoptions{absolute=true,showboxes=false}
+  \begin{center}
+    \begin{textblock*}{10cm}(5.5cm,20.1cm)
+      {\color{white}\bfseries\fontsize{20}{25}\selectfont Réalisé le \@date}
+    \end{textblock*}
+  \end{center}
+}

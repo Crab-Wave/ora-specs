@@ -1,7 +1,33 @@
 \documentclass[11pt, a4paper]{specifications}
+
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{lipsum}
+
+\title{Projet ORA}
+\author{Crab Wave}
+\university{EPITA}
+\date{17 Janvier 2020}
+
+\firstpage{firstpage.png}
+\background{background.png}
+
+\lheader{Cahier des charges}
+\rheader{Projet ORA}
+
 \begin{document}
- \BgThispage
- Some content
- \clearpage
- text
+	\maketitle
+	\thispagestyle{empty}   %% Remove page number
+	\clearpage
+
+	\tableofcontents
+	\clearpage
+
+	\section{Introduction}
+	Ceci est une introduction
+	\section{Outils Utilisés}
+	Ceci est la partie dédiée aux outils utilisés
+	\clearpage
+	\section{Blabla}
+	\lipsum
 \end{document}
