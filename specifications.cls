@@ -65,7 +65,7 @@
 %-------------------------------------------------------------------------------
 %% Page Layout
 % Configure page margins with geometry
-\geometry{left=2.0cm, top=4.5cm, right=2.0cm, bottom=2.0cm, footskip=.5cm}
+\geometry{left=2.0cm, top=4.5cm, right=2.0cm, bottom=3.0cm, footskip=1.0cm}
 
 %-------------------------------------------------------------------------------
 %                Configuration for colors
@@ -88,9 +88,11 @@
 \colorlet{graytext}{gray}
 \colorlet{lighttext}{lightgray}
 % Project colors
-\definecolor{crab}{HTML}{e55934}
+\definecolor{orangecrab}{HTML}{E55934}
+\definecolor{bluewave}{HTML}{3F72AC}
 
-\sectionfont{\color{crab}}
+\sectionfont{\color{orangecrab}}
+\subsectionfont{\color{bluewave}}
 
 %-------------------------------------------------------------------------------
 %                Configuration for fonts
@@ -107,7 +109,7 @@
 % Configure styles for each Specifications elements
 % For fundamental structures
 \newcommand*{\headernamesstyle}[1]{{\fontsize{32pt}{1em}\headerfontlight\color{text} #1}}
-\newcommand*{\headerpositionstyle}[1]{{\fontsize{7.6pt}{1em}\bodyfont\scshape\color{crab} #1}}
+\newcommand*{\headerpositionstyle}[1]{{\fontsize{7.6pt}{1em}\bodyfont\scshape\color{orangecrab} #1}}
 \newcommand*{\footerstyle}[1]{{\fontsize{8pt}{1em}\footerfont\scshape\color{lighttext} #1}}
 \newcommand*{\sectionstyle}[1]{{\fontsize{16pt}{1em}\bodyfont\bfseries\color{text}\@sectioncolor #1}}
 \newcommand*{\subsectionstyle}[1]{{\fontsize{12pt}{1em}\bodyfont\scshape\textcolor{text}{#1}}}
@@ -184,9 +186,9 @@
     \includegraphics[scale=0.08]{logo.png}
   \end{center}
   \begin{center}
-    {\Huge\bfseries\@title\par}
+    {\Huge\color{white}\bfseries\@title\par}
 	\vspace*{2ex}
-    {\Large\bfseries\@author\par}
+    {\Large\color{white}\bfseries\@author\par}
 	\vspace*{2ex}
     {\ifx\@university\@empty\else\large\@university\par\fi}
   \end{center}
