@@ -1,12 +1,19 @@
-CC = xelatex
-DIR = $(shell pwd)
-SRCS = $(shell find $(DIR) -name '*.tex')
-OUTPUT_DIR = output
+CC := xelatex
+INPUT := srs.tex
+OUTDIR := output
+OUTPUT := $(OUTDIR)/srs.pdf
 
-$(shell mkdir -p $(OUTPUT_DIR))
+.PHONY: all
+all: $(OUTPUT)
 
-pdf: $(DIR)/srs.tex $(SRCS)
-	$(CC) -output-directory=$(OUTPUT_DIR) $<
+$(OUTPUT): $(INPUT)
+	mkdir -p $(OUTDIR)
+	$(CC) -output-directory=$(OUTDIR) $<
 
+.PHONY: clean
 clean:
-	rm -rf $(OUTPUT_DIR)/*.pdf
+	rm -rf $(OUTDIR)/*.aux $(OUTDIR)/*.log $(OUTDIR)/*.out
+
+.PHONY: mrproper
+mrproper:
+	rm -rf $(OUTDIR)
