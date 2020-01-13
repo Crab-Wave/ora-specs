@@ -30,6 +30,8 @@
 \RequirePackage{geometry}
 % Needed to put a background to the document
 \RequirePackage[pages=some]{background}
+\RequirePackage{graphicx}
+\RequirePackage{blindtext}
 % Needed to manage fonts
 \RequirePackage[quiet]{fontspec}
 % Needed to use icons from font-awesome
@@ -38,6 +40,15 @@
 \RequirePackage[default,opentype]{sourcesanspro}
 % Needed to put boxes
 \RequirePackage[skins]{tcolorbox}
+% Needed to set section font
+\RequirePackage{sectsty}
+% Needed to define colors
+\RequirePackage{xcolor}
+% Needed to customize ToC
+\RequirePackage{tocloft}
+\RequirePackage{calc}
+% Needed to write text at specific location
+\RequirePackage[absolute,quiet,overlay]{textpos}
 % Needed to deal hyperlink
 \RequirePackage[hidelinks,unicode]{hyperref}
 \hypersetup{%
@@ -46,12 +57,6 @@
   pdfsubject={},
   pdfkeywords={}
 }
-% Needed to set section font
-\RequirePackage{sectsty}
-% Needed to define colors
-\RequirePackage{xcolor}
-\RequirePackage{calc}
-\RequirePackage[absolute,quiet,overlay]{textpos}
 
 %-------------------------------------------------------------------------------
 %                Configuration for directory locations
@@ -90,6 +95,7 @@
 % Project colors
 \definecolor{orangecrab}{HTML}{E55934}
 \definecolor{bluewave}{HTML}{3F72AC}
+\definecolor{darkora}{HTML}{282830}
 
 \sectionfont{\color{orangecrab}}
 \subsectionfont{\color{bluewave}}
@@ -98,25 +104,30 @@
 %                Configuration for fonts
 %-------------------------------------------------------------------------------
 % Set the FontAwesome font to be up-to-date
-\setfontfamily\FA[Path=\@fontdir]{FontAwesome}
+\newfontfamily\FontAwesome[Path=\@fontdir]{FontAwesome}
+
+% Set font for header (default is Roboto)
+\newfontfamily\robotofont[
+  Path=\@fontdir,
+  UprightFont=*-Regular,
+  ItalicFont=*-Italic,
+  BoldFont=*-Bold,
+  BoldItalicFont=*-BoldItalic,
+]{Roboto}
+
+\newfontfamily\robotofontlight[
+  Path=\@fontdir,
+  UprightFont=*-Thin,
+  ItalicFont=*-ThinItalic,
+  BoldFont=*-Medium,
+  BoldItalicFont=*-MediumItalic,
+]{Roboto}
 
 \newcommand*{\bodyfont}{\sourcesanspro}
 \newcommand*{\bodyfontlight}{\sourcesansprolight}
 
 %-------------------------------------------------------------------------------
-%                Configuration for styles
-%-------------------------------------------------------------------------------
-% Configure styles for each Specifications elements
-% For fundamental structures
-\newcommand*{\headernamesstyle}[1]{{\fontsize{32pt}{1em}\headerfontlight\color{text} #1}}
-\newcommand*{\headerpositionstyle}[1]{{\fontsize{7.6pt}{1em}\bodyfont\scshape\color{orangecrab} #1}}
-\newcommand*{\footerstyle}[1]{{\fontsize{8pt}{1em}\footerfont\scshape\color{lighttext} #1}}
-\newcommand*{\sectionstyle}[1]{{\fontsize{16pt}{1em}\bodyfont\bfseries\color{text}\@sectioncolor #1}}
-\newcommand*{\subsectionstyle}[1]{{\fontsize{12pt}{1em}\bodyfont\scshape\textcolor{text}{#1}}}
-\newcommand*{\paragraphstyle}{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text}}
-
-%-------------------------------------------------------------------------------
-%                Commands for personal information
+%                Commands for organization information
 %-------------------------------------------------------------------------------
 
 % Define background images
@@ -127,17 +138,23 @@
 \newcommand*{\lheader}[1]{\def\@lheader{#1}}
 \newcommand*{\rheader}[1]{\def\@rheader{#1}}
 
+\let\@university\@empty
+\let\@homepage\@empty
+\let\@email\@empty
+\let\@github\@empty
+\let\@gitlab\@empty
+
 % Define project's basic properties
 % Usage: \university{<university name>}
 \newcommand*{\university}[1]{\def\@university{#1}}
 
-% Defines project's email (optional)
-% Usage: \email{<email address>}
-\newcommand*{\email}[1]{\def\@email{#1}}
-
 % Defines project's homepage (optional)
 % Usage: \homepage{<url>}
 \newcommand*{\homepage}[1]{\def\@homepage{#1}}
+
+% Defines project's email (optional)
+% Usage: \email{<email address>}
+\newcommand*{\email}[1]{\def\@email{#1}}
 
 % Defines project's github (optional)
 % Usage: \github{<github-nick>}
@@ -146,6 +163,32 @@
 % Defines project's gitlab (optional)
 % Usage: \gitlab{<gitlab-nick>}
 \newcommand*{\gitlab}[1]{\def\@gitlab{#1}}
+
+%\newenvironment{boxed}[1]{
+%  \begin{center}
+%    #1
+%	\makebox[\textwidth]{\includegraphics[width=0.9\linewidth,height=0.9\textheight]{box.png}}
+%  \end{center}
+%}
+
+\newtcolorbox{boxed}[2][]{
+  before    = \begin{center},
+  enhanced,
+  center title,
+  hbox,
+  toprule   = 10pt,
+  titlerule = 10pt,
+  boxrule   = 3pt,
+  outer arc = 0pt,
+  arc       = 0pt,
+  colframe  = darkora,
+  colback   = white,
+  coltitle  = white,
+  title     = {\MakeUppercase{#2}},
+  fonttitle = \bfseries\fontsize{20}{20}\selectfont,
+  after     = \end{center},
+  #1
+}
 
 % -------------------------------------------------------------------------
 
@@ -171,10 +214,10 @@
 	\TPoptions{absolute=true,showboxes=false}
     \begin{center}
       \begin{textblock*}{10cm}(-0.5cm,1.0cm)
-        {\color{white}\bfseries\fontsize{20}{25}\selectfont\MakeUppercase\@lheader}
+        {\color{white}\fontsize{20}{25}\selectfont\MakeUppercase\@lheader}
       \end{textblock*}
 	  \begin{textblock*}{10cm}(11.2cm,1.0cm)
-        {\color{white}\bfseries\fontsize{20}{25}\selectfont\MakeUppercase\@rheader}
+        {\color{white}\fontsize{20}{25}\selectfont\MakeUppercase\@rheader}
       \end{textblock*}
     \end{center}
   \fi
@@ -190,7 +233,12 @@
 	\vspace*{2ex}
     {\Large\color{white}\bfseries\@author\par}
 	\vspace*{2ex}
-    {\ifx\@university\@empty\else\large\@university\par\fi}
+    {\ifx\@university\@empty\else\large\color{white}\@university\par\fi}
+	\vspace*{2ex}
+	{\ifx\@homepage\@empty\else\large\color{white}\FontAwesome\href{\@homepage}{}\fi}
+	{\ifx\@email\@empty\else\large\color{white}\FontAwesome\href{\@email}{}\fi}
+	{\ifx\@github\@empty\else\large\color{white}\FontAwesome\href{\@github}{}\fi}
+	{\ifx\@gitlab\@empty\else\large\color{white}\FontAwesome\href{\@gitlab}{}\fi}
   \end{center}
   \TPoptions{absolute=true,showboxes=false}
   \begin{center}
@@ -199,3 +247,10 @@
     \end{textblock*}
   \end{center}
 }
+
+\let\stdl@section\l@section
+\renewcommand*{\l@section}[2]{%
+  \stdl@section{\textcolor{orangecrab}{#1}}{\textcolor{orangecrab}{#2}}}
+\let\stdl@subsection\l@subsection
+\renewcommand*{\l@subsection}[2]{%
+  \stdl@subsection{\bfseries\textcolor{bluewave}{#1}}{\textcolor{bluewave}{#2}}}

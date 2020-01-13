@@ -1,15 +1,15 @@
 CC := xelatex
-INPUT := srs.tex
+INPUT := specifications.tex
 OUTDIR := output
-OUTPUT := $(OUTDIR)/srs.pdf
+OUTPUT := $(OUTDIR)/specifications.pdf
 
 .PHONY: all
 all: $(OUTPUT)
 
-$(OUTPUT): $(OUTDIR)/srs.aux remake
+$(OUTPUT): $(OUTDIR)/specifications.aux remake
 	
 
-$(OUTDIR)/srs.aux: $(INPUT)
+$(OUTDIR)/specifications.aux: $(INPUT)
 	mkdir -p $(OUTDIR)
 	$(CC) -output-directory=$(OUTDIR) $<
 
