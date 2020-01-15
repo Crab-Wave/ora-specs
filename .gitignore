@@ -1,2 +1,7 @@
 output
 *.psd
+
+*.aux
+*.fdb_latexmk
+*.fls
+*.log

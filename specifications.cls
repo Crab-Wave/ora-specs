@@ -135,6 +135,7 @@
 % Usage: \background{<path-to-image>}
 \newcommand*{\firstpage}[1]{\def\@firstpage{#1}}
 \newcommand*{\background}[1]{\def\@background{#1}}
+\newcommand*{\logo}[1]{\def\@logo{#1}}
 \newcommand*{\lheader}[1]{\def\@lheader{#1}}
 \newcommand*{\rheader}[1]{\def\@rheader{#1}}
 
@@ -226,7 +227,7 @@
 
 \renewcommand\maketitle{
   \begin{center}
-    \includegraphics[scale=0.08]{logo.png}
+    \includegraphics[scale=0.08]{\@logo}
   \end{center}
   \begin{center}
     {\Huge\color{white}\bfseries\@title\par}
