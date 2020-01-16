@@ -95,6 +95,7 @@
 % Project colors
 \definecolor{orangecrab}{HTML}{E55934}
 \definecolor{bluewave}{HTML}{3F72AC}
+\definecolor{clearocean}{HTML}{1B97D1}
 \definecolor{darkora}{HTML}{282830}
 
 \sectionfont{\color{orangecrab}}
@@ -139,6 +140,7 @@
 \newcommand*{\lheader}[1]{\def\@lheader{#1}}
 \newcommand*{\rheader}[1]{\def\@rheader{#1}}
 
+\let\@team\@empty
 \let\@university\@empty
 \let\@homepage\@empty
 \let\@email\@empty
@@ -146,7 +148,9 @@
 \let\@gitlab\@empty
 
 % Define project's basic properties
+% Usage: \team{<team name>}
 % Usage: \university{<university name>}
+\newcommand*{\team}[1]{\def\@team{#1}}
 \newcommand*{\university}[1]{\def\@university{#1}}
 
 % Defines project's homepage (optional)
@@ -201,7 +205,7 @@
       opacity=1.0,
       contents={
         \includegraphics[width=\paperwidth,height=\paperheight]{\@firstpage}
-	  }
+	 }
     }
   \else
     \backgroundsetup{
@@ -210,14 +214,14 @@
       opacity=1.0,
       contents={
         \includegraphics[width=\paperwidth,height=\paperheight]{\@background}
-	  }
+	 }
     }
 	\TPoptions{absolute=true,showboxes=false}
     \begin{center}
       \begin{textblock*}{10cm}(-0.5cm,1.0cm)
         {\color{white}\fontsize{20}{25}\selectfont\MakeUppercase\@lheader}
       \end{textblock*}
-	  \begin{textblock*}{10cm}(11.2cm,1.0cm)
+	 \begin{textblock*}{10cm}(11.2cm,1.0cm)
         {\color{white}\fontsize{20}{25}\selectfont\MakeUppercase\@rheader}
       \end{textblock*}
     \end{center}
@@ -232,14 +236,17 @@
   \begin{center}
     {\Huge\color{white}\bfseries\@title\par}
 	\vspace*{2ex}
-    {\Large\color{white}\bfseries\@author\par}
+	{\ifx\@team\@empty\else\Large\color{white}\bfseries\@team\par\fi}
 	\vspace*{2ex}
     {\ifx\@university\@empty\else\large\color{white}\@university\par\fi}
 	\vspace*{2ex}
 	{\ifx\@homepage\@empty\else\large\color{white}\FontAwesome\href{\@homepage}{}\fi}
-	{\ifx\@email\@empty\else\large\color{white}\FontAwesome\href{\@email}{}\fi}
 	{\ifx\@github\@empty\else\large\color{white}\FontAwesome\href{\@github}{}\fi}
-	{\ifx\@gitlab\@empty\else\large\color{white}\FontAwesome\href{\@gitlab}{}\fi}
+	{\ifx\@gitlab\@empty\else\large\color{white}\FontAwesome\href{\@gitlab}{}\fi}	
+	{\ifx\@email\@empty\else\large\color{white}\FontAwesome\href{\@email}{}\fi}
+    \par
+	\vspace*{8ex}
+	{\color{white}\@author\par}
   \end{center}
   \TPoptions{absolute=true,showboxes=false}
   \begin{center}
